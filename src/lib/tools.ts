@@ -456,6 +456,78 @@ export function decodeBase64(encoded: string): { result: string; error?: string 
   }
 }
 
+/**
+ * Decode a Base64 string to an image data URL.
+ * Handles data URI prefixes (e.g. "data:image/png;base64,xxx") and raw Base64.
+ * Returns the image as a data URL that can be displayed in an <img> tag.
+ */
+export function decodeBase64Image(
+  input: string
+): { dataUrl: string; mimeType: string; error?: string } {
+  if (!input.trim()) return { dataUrl: "", mimeType: "", error: "Input is empty" };
+
+  try {
+    let base64 = input.trim();
+    let mimeType = "image/png";
+
+    // Strip data URI prefix if present (e.g. "data:image/png;base64,xxx")
+    const dataUriMatch = base64.match(
+      /^data:(image\/[a-zA-Z+.-]+);base64,(.+)$/
+    );
+    if (dataUriMatch) {
+      mimeType = dataUriMatch[1];
+      base64 = dataUriMatch[2];
+    } else {
+      // Try to detect MIME type from raw Base64 magic bytes
+      const binary = atob(base64);
+      if (binary.charCodeAt(0) === 0xff && binary.charCodeAt(1) === 0xd8) {
+        mimeType = "image/jpeg";
+      } else if (
+        binary.charCodeAt(0) === 0x89 &&
+        binary.charCodeAt(1) === 0x50 &&
+        binary.charCodeAt(2) === 0x4e &&
+        binary.charCodeAt(3) === 0x47
+      ) {
+        mimeType = "image/png";
+      } else if (
+        binary.charCodeAt(0) === 0x47 &&
+        binary.charCodeAt(1) === 0x49 &&
+        binary.charCodeAt(2) === 0x46
+      ) {
+        mimeType = "image/gif";
+      } else if (
+        binary.charCodeAt(0) === 0x52 &&
+        binary.charCodeAt(1) === 0x49 &&
+        binary.charCodeAt(2) === 0x46 &&
+        binary.charCodeAt(3) === 0x46
+      ) {
+        mimeType = "image/webp";
+      } else if (binary.charCodeAt(0) === 0x3c) {
+        mimeType = "image/svg+xml";
+      }
+    }
+
+    // Validate the Base64 string
+    const binary = atob(base64);
+    if (binary.length === 0) {
+      return {
+        dataUrl: "",
+        mimeType: "",
+        error: "Decoded Base64 is empty — not a valid image",
+      };
+    }
+
+    const dataUrl = `data:${mimeType};base64,${base64}`;
+    return { dataUrl, mimeType };
+  } catch {
+    return {
+      dataUrl: "",
+      mimeType: "",
+      error: "Invalid Base64 string. Please check your input.",
+    };
+  }
+}
+
 // ─── Password Generation ──────────────────────────────────────────────────────
 
 export interface PasswordOptions {

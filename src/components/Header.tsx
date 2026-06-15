@@ -13,6 +13,7 @@ const navLinks = [
   { label: "XML Formatter", href: "/xml-formatter" },
   { label: "YAML Converter", href: "/yaml-converter" },
   { label: "Base64", href: "/base64" },
+  { label: "Base64 → Img", href: "/base64-to-image" },
   { label: "Password Tools", href: "/password-tools" },
 ];
 

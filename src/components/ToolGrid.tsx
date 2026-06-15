@@ -7,6 +7,7 @@ import {
   Code2,
   ArrowRightLeft,
   Binary,
+  ImageIcon,
   Key,
   Shield,
   ArrowRight,
@@ -73,6 +74,15 @@ const tools: Tool[] = [
     icon: Key,
     href: "/password-tools",
     color: "bg-green-500/10 text-green-500",
+  },
+  {
+    id: "base64-to-image",
+    title: "Base64 to Image",
+    description:
+      "Decode Base64 strings back into images. Supports PNG, JPEG, GIF, WebP and SVG.",
+    icon: ImageIcon,
+    href: "/base64-to-image",
+    color: "bg-indigo-500/10 text-indigo-500",
   },
   {
     id: "password-checker",
