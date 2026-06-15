@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { Heart } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { useLanguageStore } from "@/store/language";
+import { translations } from "@/lib/translations";
 
 const footerLinks = [
   { label: "GitHub", href: "https://github.com/formatterhub" },
@@ -9,15 +13,19 @@ const footerLinks = [
 ];
 
 export function Footer() {
+  const lang = useLanguageStore((s) => s.language);
+  const t = translations[lang];
+  const year = new Date().getFullYear();
+
   return (
     <footer className="border-t border-border">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           {/* Branding */}
           <p className="text-sm text-muted-foreground flex items-center gap-1">
-            Made with
+            {t.footer.madeWith.split("❤️")[0]}
             <Heart className="h-3.5 w-3.5 text-red-500 fill-red-500" />
-            for developers
+            {t.footer.madeWith.split("❤️")[1]}
           </p>
 
           {/* Links */}
@@ -45,7 +53,7 @@ export function Footer() {
 
           {/* Copyright */}
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} FormatterHub. All rights reserved.
+            {t.footer.rights.replace("{year}", String(year))}
           </p>
         </div>
       </div>

@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useLanguageStore } from "@/store/language";
+import { translations } from "@/lib/translations";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -26,6 +28,9 @@ const itemVariants = {
 } as const;
 
 export function Hero() {
+  const lang = useLanguageStore((s) => s.language);
+  const t = translations[lang];
+
   return (
     <section className="relative overflow-hidden">
       {/* Subtle background gradient */}
@@ -47,7 +52,7 @@ export function Hero() {
           className="font-heading text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl"
         >
           <span className="bg-gradient-to-br from-foreground via-foreground to-foreground/70 bg-clip-text text-transparent">
-            Developer Formatting Tools
+            {t.hero.title}
           </span>
         </motion.h1>
 
@@ -55,15 +60,14 @@ export function Hero() {
           variants={itemVariants}
           className="mt-4 text-xl font-medium text-muted-foreground sm:text-2xl"
         >
-          That Just Work
+          {t.hero.subtitle}
         </motion.p>
 
         <motion.p
           variants={itemVariants}
           className="mt-6 text-base text-muted-foreground leading-relaxed max-w-2xl mx-auto"
         >
-          Fast, free and privacy-friendly formatting utilities for developers.
-          All processing happens in your browser — nothing leaves your machine.
+          {t.hero.description}
         </motion.p>
 
         <motion.div
@@ -74,13 +78,13 @@ export function Hero() {
             href="#tools"
             className="inline-flex h-10 items-center justify-center rounded-lg bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Explore Tools
+            {t.hero.ctaExplore}
           </a>
           <a
             href="/donate"
             className="inline-flex h-10 items-center justify-center rounded-lg border border-border px-6 text-sm font-medium transition-colors hover:bg-muted"
           >
-            Support Us
+            {t.hero.ctaSupport}
           </a>
         </motion.div>
       </motion.div>

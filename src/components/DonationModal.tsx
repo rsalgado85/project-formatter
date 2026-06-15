@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useLanguageStore } from "@/store/language";
+import { translations } from "@/lib/translations";
 
 const PRESET_AMOUNTS = [3, 5, 10, 20];
 
@@ -21,6 +23,8 @@ interface DonationModalProps {
 }
 
 export function DonationModal({ open, onOpenChange }: DonationModalProps) {
+  const lang = useLanguageStore((s) => s.language);
+  const t = translations[lang];
   const [selectedAmount, setSelectedAmount] = useState<number | null>(5);
   const [customAmount, setCustomAmount] = useState("");
   const [isCustom, setIsCustom] = useState(false);
@@ -42,11 +46,10 @@ export function DonationModal({ open, onOpenChange }: DonationModalProps) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Heart className="h-5 w-5 text-red-500 fill-red-500" />
-            Support FormatterHub
+            {t.donate.title}
           </DialogTitle>
           <DialogDescription>
-            Choose an amount to help keep these tools free and ad-free for
-            developers everywhere.
+            {t.donate.desc}
           </DialogDescription>
         </DialogHeader>
 
@@ -80,7 +83,7 @@ export function DonationModal({ open, onOpenChange }: DonationModalProps) {
             <input
               type="number"
               min="1"
-              placeholder="Custom amount"
+              placeholder={t.donate.chooseAmount}
               value={customAmount}
               onChange={(e) => {
                 setCustomAmount(e.target.value);
@@ -99,11 +102,11 @@ export function DonationModal({ open, onOpenChange }: DonationModalProps) {
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {lang === "en" ? "Cancel" : "Cancelar"}
           </Button>
           <Button onClick={handleDonate} disabled={amount <= 0}>
             <Coffee className="h-4 w-4" />
-            Donate ${amount > 0 ? amount : "—"}
+            {t.donate.paypalButton}
           </Button>
         </DialogFooter>
       </DialogContent>

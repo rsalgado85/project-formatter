@@ -3,8 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Code2, Sun, Moon, Menu, X, Coffee } from "lucide-react";
+import { Code2, Sun, Moon, Menu, X, Coffee, Globe } from "lucide-react";
 import { useThemeStore } from "@/store/theme";
+import { useLanguageStore } from "@/store/language";
+import { translations } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -15,10 +17,14 @@ const navLinks = [
   { label: "Base64", href: "/base64" },
   { label: "Base64 → Img", href: "/base64-to-image" },
   { label: "Password Tools", href: "/password-tools" },
+  { label: "About", href: "/about", esLabel: "Acerca de" },
 ];
 
 export function Header() {
   const { theme, toggleTheme } = useThemeStore();
+  const lang = useLanguageStore((s) => s.language);
+  const setLanguage = useLanguageStore((s) => s.setLanguage);
+  const t = translations[lang];
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -48,7 +54,7 @@ export function Header() {
               href={link.href}
               className="px-3 py-1.5 text-sm text-muted-foreground rounded-md transition-colors hover:text-foreground hover:bg-muted/50"
             >
-              {link.label}
+              {lang === "es" && "esLabel" in link ? link.esLabel : link.label}
             </Link>
           ))}
         </nav>
@@ -69,11 +75,21 @@ export function Header() {
             )}
           </Button>
 
+          {/* Language toggle */}
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={() => setLanguage(lang === "en" ? "es" : "en")}
+            aria-label={lang === "en" ? "Cambiar a español" : "Switch to English"}
+          >
+            <Globe className="h-4 w-4" />
+          </Button>
+
           {/* Donate button (desktop) */}
           <Link href="/donate" className="hidden sm:inline-flex">
             <Button variant="outline" size="sm" className="gap-1.5">
               <Coffee className="h-3.5 w-3.5" />
-              Donate
+              {t.header.donate}
             </Button>
           </Link>
 
@@ -108,7 +124,7 @@ export function Header() {
                   onClick={() => setMenuOpen(false)}
                   className="px-3 py-2 text-sm text-muted-foreground rounded-md transition-colors hover:text-foreground hover:bg-muted/50"
                 >
-                  {link.label}
+                  {lang === "es" && "esLabel" in link ? link.esLabel : link.label}
                 </Link>
               ))}
               <Link
@@ -117,7 +133,7 @@ export function Header() {
                 className="mt-2 flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-foreground rounded-md bg-primary/10 hover:bg-primary/20 transition-colors"
               >
                 <Coffee className="h-3.5 w-3.5" />
-                Donate
+                {t.header.donate}
               </Link>
             </nav>
           </motion.div>
