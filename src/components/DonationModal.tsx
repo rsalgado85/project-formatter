@@ -11,11 +11,10 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { useLanguageStore } from "@/store/language";
 import { translations } from "@/lib/translations";
 
-const PRESET_AMOUNTS = [3, 5, 10, 20];
+const PRESETS = [3, 5, 10];
 
 interface DonationModalProps {
   open: boolean;
@@ -25,11 +24,13 @@ interface DonationModalProps {
 export function DonationModal({ open, onOpenChange }: DonationModalProps) {
   const lang = useLanguageStore((s) => s.language);
   const t = translations[lang];
-  const [selectedAmount, setSelectedAmount] = useState<number | null>(5);
-  const [customAmount, setCustomAmount] = useState("");
-  const [isCustom, setIsCustom] = useState(false);
+  const [selectedPreset, setSelectedPreset] = useState<number | null>(5);
+  const [customAmount, setCustomAmount] = useState("20");
+  const [isCustomActive, setIsCustomActive] = useState(false);
 
-  const amount = isCustom ? Number(customAmount) || 0 : selectedAmount ?? 0;
+  const amount = isCustomActive
+    ? Number(customAmount) || 0
+    : selectedPreset ?? 0;
 
   function handleDonate() {
     if (amount <= 0) return;
@@ -48,55 +49,50 @@ export function DonationModal({ open, onOpenChange }: DonationModalProps) {
             <Heart className="h-5 w-5 text-red-500 fill-red-500" />
             {t.donate.title}
           </DialogTitle>
-          <DialogDescription>
-            {t.donate.desc}
-          </DialogDescription>
+          <DialogDescription>{t.donate.desc}</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-2">
-          {/* Preset amounts */}
+          {/* Preset amounts grid */}
           <div className="grid grid-cols-4 gap-2">
-            {PRESET_AMOUNTS.map((amt) => (
+            {PRESETS.map((amt) => (
               <button
                 key={amt}
                 onClick={() => {
-                  setSelectedAmount(amt);
-                  setIsCustom(false);
+                  setSelectedPreset(amt);
+                  setIsCustomActive(false);
                 }}
-                className={cn(
-                  "flex items-center justify-center rounded-lg border px-3 py-2.5 text-sm font-medium transition-all",
-                  selectedAmount === amt && !isCustom
-                    ? "border-primary bg-primary text-primary-foreground"
+                className={`flex items-center justify-center rounded-lg border px-3 py-2.5 text-sm font-medium transition-all ${
+                  selectedPreset === amt && !isCustomActive
+                    ? "border-primary bg-primary text-primary-foreground shadow-sm"
                     : "border-border hover:border-primary/40 hover:bg-muted"
-                )}
+                }`}
               >
                 ${amt}
               </button>
             ))}
-          </div>
 
-          {/* Custom amount */}
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
-              $
-            </span>
-            <input
-              type="number"
-              min="1"
-              placeholder={t.donate.chooseAmount}
-              value={customAmount}
-              onChange={(e) => {
-                setCustomAmount(e.target.value);
-                setIsCustom(true);
-              }}
-              onFocus={() => setIsCustom(true)}
-              className={cn(
-                "w-full rounded-lg border bg-transparent py-2.5 pl-7 pr-3 text-sm outline-none transition-colors",
-                "border-border placeholder:text-muted-foreground",
-                "focus:border-primary focus:ring-2 focus:ring-primary/20",
-                isCustom && "border-primary"
-              )}
-            />
+            {/* Editable $20 field */}
+            <div className="relative">
+              <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-sm font-medium text-muted-foreground">
+                $
+              </span>
+              <input
+                type="number"
+                min="1"
+                value={customAmount}
+                onChange={(e) => {
+                  setCustomAmount(e.target.value);
+                  setIsCustomActive(true);
+                }}
+                onFocus={() => setIsCustomActive(true)}
+                className={`w-full rounded-lg border bg-transparent py-2.5 pl-7 pr-1.5 text-sm font-medium outline-none transition-all text-center ${
+                  isCustomActive
+                    ? "border-primary ring-2 ring-primary/20"
+                    : "border-border hover:border-primary/40"
+                }`}
+              />
+            </div>
           </div>
         </div>
 
@@ -107,6 +103,7 @@ export function DonationModal({ open, onOpenChange }: DonationModalProps) {
           <Button onClick={handleDonate} disabled={amount <= 0}>
             <Coffee className="h-4 w-4" />
             {t.donate.paypalButton}
+            {amount > 0 ? ` — $${amount}` : ""}
           </Button>
         </DialogFooter>
       </DialogContent>
