@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="32" y2="32">
+      <stop offset="0%" stop-color="#18181b"/>
+      <stop offset="100%" stop-color="#27272a"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="8" fill="url(#bg)"/>
+  <rect width="32" height="32" rx="8" fill="none" stroke="#3f3f46" stroke-width="0.5"/>
+  <text x="16" y="22" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" font-weight="800" fill="#fafafa" letter-spacing="-0.5">FH</text>
+  <line x1="8" y1="24" x2="24" y2="24" stroke="#a1a1aa" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+</svg>

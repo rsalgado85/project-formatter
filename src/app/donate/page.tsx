@@ -44,7 +44,7 @@ export default function DonatePage() {
               {PRESET_AMOUNTS.map((amt) => (
                 <a
                   key={amt}
-                  href={`https://paypal.me/formatterhub/${amt}`}
+                  href={`https://paypal.me/rsalgado85/${amt}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center rounded-lg border border-border px-3 py-3 text-sm font-medium transition-all hover:border-primary hover:bg-primary/5 hover:text-primary"
@@ -54,7 +54,7 @@ export default function DonatePage() {
               ))}
             </div>
             <a
-              href="https://paypal.me/formatterhub"
+              href="https://paypal.me/rsalgado85"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 w-full rounded-lg bg-primary px-4 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"

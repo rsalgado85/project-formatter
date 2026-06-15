@@ -35,6 +35,11 @@ export const metadata: Metadata = {
       "Fast, free and privacy-friendly formatting utilities for developers. All processing happens in your browser.",
     type: "website",
   },
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({

@@ -34,7 +34,7 @@ export function DonationModal({ open, onOpenChange }: DonationModalProps) {
   function handleDonate() {
     if (amount <= 0) return;
     window.open(
-      `https://paypal.me/formatterhub/${amount}`,
+      `https://paypal.me/rsalgado85/${amount}`,
       "_blank",
       "noopener,noreferrer"
     );
