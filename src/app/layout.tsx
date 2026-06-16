@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     type: "website",
     url: BASE_URL,
     siteName: "FormatterHub",
-    locale: "es_ES",
+    locale: "en_US",
     images: [
       {
         url: `${BASE_URL}/favicon.svg`,
@@ -94,7 +94,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="es"
+      lang="en"
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       suppressHydrationWarning
     >
